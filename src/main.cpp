@@ -8,8 +8,8 @@
 
 // Prototypes
 bool received_callback(String &msg, FloodingMesh &mesh_instance);
-void mqtt_callback(char *topic, byte *payload, unsigned int length);
-IPAddress getlocal_ip();
+// void mqtt_callback(char *topic, byte *payload, unsigned int length);
+// IPAddress getlocal_ip();
 
 // A custom encryption key is required when using encrypted ESP-NOW transmissions. There is always a default Kok set, but it can be replaced if desired.
 // All ESP-NOW keys below must match in an encrypted connection pair for encrypted communication to be possible.
@@ -24,9 +24,9 @@ FloodingMesh mesh = FloodingMesh(received_callback, FPSTR(MESH_PASSWORD), espnow
 
 
 WiFiClient wifi;
-IPAddress my_ip(0, 0, 0, 0);
-IPAddress mqtt_broker(192, 168, 4, 2);
-PubSubClient mqtt(mqtt_broker, 1883, mqtt_callback, wifi);
+// IPAddress my_ip(0, 0, 0, 0);
+// IPAddress mqtt_broker(192, 168, 4, 2);
+// PubSubClient mqtt(mqtt_broker, 1883, mqtt_callback, wifi);
 void setup() {
 	WiFi.persistent(false);
 	Serial.begin(BAUDRATE);
@@ -37,28 +37,29 @@ void setup() {
 
 void loop() {
 	floodingMeshDelay(1);
-	mqtt.loop();
+	// mqtt.loop();
 
-	if (!mqtt.connected())
-		if (mqtt.connect("gate"))
-			mqtt.publish(alive, "Ready!");
+	// if (!mqtt.connected())
+	// 	if (mqtt.connect("gate"))
+	// 		mqtt.publish(alive, "Ready!");
 
-	if (my_ip != getlocal_ip()) {
-		my_ip = getlocal_ip();
+	// if (my_ip != getlocal_ip()) {
+	// 	my_ip = getlocal_ip();
 
-		if (mqtt.connect("gate"))
-			mqtt.publish(alive, "Ready!");
-	}
+	// 	if (mqtt.connect("gate"))
+	// 		mqtt.publish(alive, "Ready!");
+	// }
 }
 
 bool received_callback(String &msg, FloodingMesh &mesh_instance) {
-	mqtt.publish(report, msg.c_str());
+	// mqtt.publish(report, msg.c_str());
+	Serial.println(msg);
 	return true;
 }
 
-void mqtt_callback(char *topic, uint8_t *payload, unsigned int length) {
-}
+// void mqtt_callback(char *topic, uint8_t *payload, unsigned int length) {
+// }
 
-IPAddress getlocal_ip() {
-	return IPAddress(WiFi.localIP());
-}
+// IPAddress getlocal_ip() {
+// 	return IPAddress(WiFi.localIP());
+// }
