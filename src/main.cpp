@@ -27,9 +27,6 @@ WiFiClient wifi;
 IPAddress my_ip(0, 0, 0, 0);
 IPAddress mqtt_broker(192, 168, 4, 2);
 PubSubClient mqtt(mqtt_broker, 1883, mqtt_callback, wifi);
-
-extern void (*command_handlers[HANDLERS_SIZE])(data_frame& frame);
-
 void setup() {
 	WiFi.persistent(false);
 	Serial.begin(BAUDRATE);
@@ -60,15 +57,6 @@ bool received_callback(String &msg, FloodingMesh &mesh_instance) {
 }
 
 void mqtt_callback(char *topic, uint8_t *payload, unsigned int length) {
-	char *clean_payload = (char *)malloc(length + 1);
-
-	memcpy(clean_payload, payload, length);
-	clean_payload[length] = '\0';
-	String msg = String(clean_payload);
-	free(clean_payload);
-
-	String target = String(topic);
-    mqtt.publish(report, msg.c_str());
 }
 
 IPAddress getlocal_ip() {
